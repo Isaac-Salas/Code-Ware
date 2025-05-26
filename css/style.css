@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('../assets/fonts/Wariowareinc-BWWdn.ttf') format('truetype'); /* Change to your actual font file name and format */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #181a1b;
+    font-family: 'MyCustomFont', Arial, sans-serif;
+}
+.card {
+    background-color: #23272b;
+    color: #f8f9fa;
+}
+.form-label, .card-title, label, select, option {
+    color: #f8f9fa !important;
+}
+.form-control, .form-select {
+    background-color: #181a1b;
+    color: #f8f9fa;
+    border: 1px solid #343a40;
+}
+.form-control:focus, .form-select:focus {
+    background-color: #23272b;
+    color: #f8f9fa;
+    border-color: #495057;
+}
+#output {
+    background-color: #101214 !important;
+    color: #00ff90 !important;
+    font-family: 'MyCustomFont', monospace !important;
+    font-size: 1rem;
+}
+.btn-primary {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+.CodeMirror, .CodeMirror pre, .CodeMirror-lines {
+    font-family: 'MyCustomFont', monospace !important;
+    font-size: 1rem;
+}

@@ -3,21 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
+    <title>Online Code Runner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 </head>
 <body>
-    <div>
-        <textarea id="sourceCode" rows="10" cols="50" placeholder="Enter your code here"></textarea>
-        <select id="languageId">
-            <option value= "0" >Select a language</option>
-            <option value= "50">C</option>
-            <option value= "53">C++</option>
-            <option value= "71" >Python</option>
-        </select>
-        <p id="output"></p>
-        <button id="myButton">Click me</button> 
-
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <img src="assets/logo/CodeWare.png" alt="" class="img-fluid mb-3 w-100" style="object-fit: contain; max-height: 180px;">
+                        <div class="mb-3">
+                            <label for="sourceCode" class="form-label">Your Code:</label>
+                            <textarea id="sourceCode" class="form-control" rows="10" placeholder="Enter your code here"></textarea>
+                            <script>
+                              var editor = CodeMirror.fromTextArea(document.getElementById("sourceCode"), {
+                                lineNumbers: true,
+                                mode: "text/x-c++src", // or "text/x-csrc" or "python"
+                                theme: "dracula", // Dracula theme
+                                matchBrackets: true,
+                                autoCloseBrackets: true,
+                                tabSize: 4,
+                                indentUnit: 4
+                              });
+                            </script>
+                        </div>
+                        <div class="mb-3">
+                            <label for="languageId" class="form-label">Select Language</label>
+                            <select id="languageId" class="form-select">
+                                <option value="0">Select a language</option>
+                                <option value="50">C</option>
+                                <option value="53">C++</option>
+                                <option value="71">Python</option>
+                            </select>
+                        </div>
+                        <!-- Upload button -->
+                        <input type="file" id="fileInput" accept=".py,.cpp,.c,.txt" class="form-control mb-3">
+                        <div class="d-grid mb-3">
+                            <button id="myButton" class="btn btn-primary btn-lg">Run Code</button>
+                        </div>
+                        <div>
+                            <label class="form-label">Output</label>
+                            <pre id="output" class="bg-dark text-white p-3 rounded" style="min-height: 60px;"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="js/app.js"></script>
 </body>

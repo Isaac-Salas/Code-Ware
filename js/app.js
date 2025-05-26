@@ -1,49 +1,45 @@
-const url = 'https://judge0-ce.p.rapidapi.com/about';
+// Changed to my AWS Judge0 instance
+const baseUrl = 'http://3.145.152.10:2358/';
+
+// For "about" endpoint
+const url = `${baseUrl}/about`;
 const options = {
-  method: 'GET',
-  headers: {
-    'X-Rapidapi-Key': 'c907e904e7msh67b378f5662228dp1cbefbjsn58a924ce3dee',
-    'X-Rapidapi-Host': 'judge0-ce.p.rapidapi.com',
-    'Host': 'judge0-ce.p.rapidapi.com'
-  }
+  method: 'GET'
 };
 
 fetch(url, options)
   .then(response => response.json())
   .then(data => {
-    console.log(data); // Handle the API response here
+    console.log(data);
   })
   .catch(error => {
     console.error('Error:', error);
   });
 
 
-  document.getElementById('myButton').addEventListener('click', submitCodeToJudge0);
 
-  function submitCodeToJudge0(sourceCode, languageId) {
-    sourceCode = document.getElementById('sourceCode').value;
-    languageId = document.getElementById('languageId').value;
-    const submitUrl = 'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true';
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-RapidAPI-Key': 'c907e904e7msh67b378f5662228dp1cbefbjsn58a924ce3dee',
-        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
-      },
-      body: JSON.stringify({
-        language_id: languageId,
-        source_code: sourceCode
-      })
-    };
+document.getElementById('myButton').addEventListener('click', submitCodeToJudge0);
+// For code submission using mi own API
+function submitCodeToJudge0(sourceCode, languageId) {
+  const code = editor.getValue();
+  languageId = document.getElementById('languageId').value;
+  const submitUrl = `${baseUrl}/submissions?base64_encoded=false&wait=true`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      language_id: languageId,
+      source_code: code
+    })
+  };
 
-    return fetch(submitUrl, options)
-      .then(response => response.json())
-      .then(data => {
-
-        console.log('Execution result:', data);
-        let output = '';
-        if (data.stdout) {
+  return fetch(submitUrl, options)
+    .then(response => response.json())
+    .then(data => {
+      let output = '';
+      if (data.stdout) {
         output = data.stdout;
       } else if (data.stderr) {
         output = data.stderr;
@@ -53,18 +49,13 @@ fetch(url, options)
         output = 'No output';
       }
       document.getElementById('output').textContent = output;
-      return data; // Contains stdout, stderr, etc.
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('output').textContent = 'Error: ' + error;
-        throw error;
-      });
-
-
+      return data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('output').textContent = 'Error: ' + error;
+      throw error;
+    });
 }
-
-// Example usage:
-// submitCodeToJudge0('#include <stdio.h>\nint main() { printf("Hello, World!"); return 0; }', 50);
 
 
