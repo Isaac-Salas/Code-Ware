@@ -1,5 +1,5 @@
 // Changed to my AWS Judge0 instance
-const baseUrl = 'http://3.145.152.10:2358/';
+const baseUrl = 'http://3.145.152.10:2358';
 
 // For "about" endpoint
 const url = `${baseUrl}/about`;
