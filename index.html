@@ -12,16 +12,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
 </head>
-<body>
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow">
-                    <div class="card-body">
+<body class="bg-dark" style="min-height: 100vh;">
+    <div class="container-fluid h-100 py-3">
+        <div class="row g-3 justify-content-center align-items-stretch h-100">
+            <!-- Main Card -->
+            <div class="col-12 col-lg-5 d-flex flex-column h-100 mb-4 mb-lg-0">
+                <div class="card shadow flex-grow-1 d-flex flex-column h-100">
+                    <div class="card-body flex-grow-1 d-flex flex-column">
                         <img src="assets/logo/CodeWare.png" alt="" class="img-fluid mb-3 w-100" style="object-fit: contain; max-height: 180px;">
-                        <div class="mb-3">
+                        <div class="mb-3 flex-grow-1 d-flex flex-column">
                             <label for="sourceCode" class="form-label">Your Code:</label>
-                            <textarea id="sourceCode" class="form-control" rows="10" placeholder="Enter your code here"></textarea>
+                            <textarea id="sourceCode" class="form-control flex-grow-1" rows="10" placeholder="Enter your code here"></textarea>
                             <script>
                               var editor = CodeMirror.fromTextArea(document.getElementById("sourceCode"), {
                                 lineNumbers: true,
@@ -35,7 +36,7 @@
                             </script>
                         </div>
                         <div class="mb-3">
-                            <label for="languageId" class="form-label">Select Language</label>
+                            <label for="languageId" class="form-label">Select Language:</label>
                             <select id="languageId" class="form-select">
                                 <option value="0">Select a language</option>
                                 <option value="50">C</option>
@@ -43,14 +44,31 @@
                                 <option value="71">Python</option>
                             </select>
                         </div>
-                        <!-- Upload button -->
                         <input type="file" id="fileInput" accept=".py,.cpp,.c,.txt" class="form-control mb-3">
                         <div class="d-grid mb-3">
                             <button id="myButton" class="btn btn-primary btn-lg">Run Code</button>
                         </div>
                         <div>
-                            <label class="form-label">Output</label>
-                            <pre id="output" class="bg-dark text-white p-3 rounded" style="min-height: 60px;"></pre>
+                            <label class="form-label">Output:</label>
+                            <pre id="output" class="bg-dark text-white p-3 rounded"
+                                 style="min-height: 70px; max-height: 70px; overflow-y: auto;"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Side Card -->
+            <div class="col-12 col-lg-7 d-flex flex-column h-100">
+                <div class="card shadow flex-grow-1 h-100 w-100 d-flex flex-column">
+                    <div class="card-body d-flex flex-column h-100">
+                        <h5 class="card-title text-center mb-4">Info & Tips</h5>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item bg-transparent text-light border-0">• Paste or upload your code file.</li>
+                            <li class="list-group-item bg-transparent text-light border-0">• Select your language before running.</li>
+                            <li class="list-group-item bg-transparent text-light border-0">• Output will appear on the left.</li>
+                            <li class="list-group-item bg-transparent text-light border-0">• Supported: C, C++, Python.</li>
+                        </ul>
+                        <div class="text-center mt-auto">
+                            <!-- Optional: Add a GIF or image here -->
                         </div>
                     </div>
                 </div>
