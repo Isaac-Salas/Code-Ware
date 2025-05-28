@@ -17,8 +17,8 @@
         <div class="row g-3 justify-content-center align-items-stretch h-100">
             <!-- Main Card -->
             <div class="col-12 col-lg-5 d-flex flex-column h-100 mb-4 mb-lg-0">
-                <div class="card shadow flex-grow-1 d-flex flex-column h-100">
-                    <div class="card-body flex-grow-1 d-flex flex-column">
+                <div class="card shadow flex-grow-1 d-flex flex-column h-100" style="min-width: 0; min-height: 0;">
+                    <div class="card-body flex-grow-1 d-flex flex-column justify-content-center">
                         <img src="assets/logo/CodeWare.png" alt="" class="img-fluid mb-3 w-100" style="object-fit: contain; max-height: 180px;">
                         <div class="mb-3 flex-grow-1 d-flex flex-column">
                             <label for="sourceCode" class="form-label">Your Code:</label>
@@ -46,7 +46,7 @@
                         </div>
                         <input type="file" id="fileInput" accept=".py,.cpp,.c,.txt" class="form-control mb-3">
                         <div class="d-grid mb-3">
-                            <button id="myButton" class="btn btn-primary btn-lg">Run Code</button>
+                            <button id="myButton" class="btn btn-primary btn-lg">Run Code!!!!!</button>
                         </div>
                         <div>
                             <label class="form-label">Output:</label>
@@ -59,16 +59,18 @@
             <!-- Side Card -->
             <div class="col-12 col-lg-7 d-flex flex-column h-100">
                 <div class="card shadow flex-grow-1 h-100 w-100 d-flex flex-column">
-                    <div class="card-body d-flex flex-column h-100">
-                        <h5 class="card-title text-center mb-4">Info & Tips</h5>
-                        <ul class="list-group list-group-flush mb-3">
-                            <li class="list-group-item bg-transparent text-light border-0">• Paste or upload your code file.</li>
-                            <li class="list-group-item bg-transparent text-light border-0">• Select your language before running.</li>
-                            <li class="list-group-item bg-transparent text-light border-0">• Output will appear on the left.</li>
-                            <li class="list-group-item bg-transparent text-light border-0">• Supported: C, C++, Python.</li>
-                        </ul>
-                        <div class="text-center mt-auto">
-                            <!-- Optional: Add a GIF or image here -->
+                    <div class="card-body d-flex flex-column h-100 justify-content-center align-items-center text-center">
+                        <div class="d-flex flex-row align-items-center justify-content-center mb-4">
+                            <h3 class="card-title mb-0 me-3">Press this button to start the game!!!</h3>
+                            <button id="startTimerBtn" class="btn btn-success" style="font-size: 2.5rem; padding: 1rem 2.5rem;">Start</button>
+                        </div>
+                        <div class="mt-auto w-100 d-flex flex-column align-items-center">
+                            <div class="mt-4">
+                                <img src="assets/sprites/Border.png" alt="Border" 
+                                     style="display: block; margin: 0 auto; image-rendering: pixelated; width: 640px; height: auto;">
+                                <div id="heartBar" class="text-center mb-2" style="display:none;"></div>
+                                <div id="timerDisplay" class="h4 text-warning" style="min-height:2em;">00:10</div>
+                            </div>
                         </div>
                     </div>
                 </div>
