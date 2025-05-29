@@ -38,6 +38,7 @@ function submitCodeToJudge0() {
   return fetch(submitUrl, options)
     .then(response => response.json())
     .then(data => {
+      console.log(data);
       let output = '';
       if (data.stdout) {
         output = data.stdout;
@@ -273,7 +274,7 @@ function loadCodeFromServer(url) {
 
 const challenges = [
     {
-        title : "SPEAK!",
+        title : "SPEAK!!!",
         languageId: "53", // C++
         path: 'assets/code-challenges/Speak.cpp',
         idle : 'assets/animations/Speak/SpeakIdle.gif',
@@ -282,8 +283,8 @@ const challenges = [
         expectedOutput: "Hello there!"
     },
     {
-        title : "1!",
-        languageId: "53", // C++
+        title : "MOVE!!!",
+        languageId: "71", // C++
         path: 'assets/code-challenges/Speak.cpp',
         idle : 'assets/animations/Speak/SpeakIdle.gif',
         good : 'assets/animations/Speak/SpeakGood.gif',
