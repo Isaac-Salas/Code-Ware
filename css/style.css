@@ -48,3 +48,43 @@ body {
     font-family: 'MyCustomFont', monospace !important;
     font-size: 1rem;
 }
+
+.btn-success {
+    background-color: #63ffba !important;
+    border-color: #63ffba !important;
+    color: white !important;
+}
+.btn-success:hover, .btn-success:focus {
+    background-color: #4fd19a !important;
+    border-color: #4fd19a !important;
+    color: #8854f3 !important;
+}
+
+
+#languageId:disabled, .form-select:disabled {
+    background-color: #ff8c5c !important;
+    color: #181a1b !important;
+    opacity: 1 !important;
+}
+
+#timerDisplay,
+.btn-warning,
+#retryBtn {
+    background-color: #fff982 !important;
+    border-color: #fff982 !important;
+    color: #000871 !important;
+}
+
+#timerDisplay {
+    display: inline-block;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    font-weight: bold;
+}
+
+#backBtn,
+.btn-secondary {
+    background-color: #ff79ae !important;
+    border-color: #ff79ae !important;
+    color: #181a1b !important;
+}

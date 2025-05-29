@@ -63,8 +63,9 @@ document.getElementById('startTimerBtn').addEventListener('click', startCountdow
 
 
 let timerInterval;
-let timerSeconds = 10; // Set your countdown seconds here
+let timerSeconds = 15; // Set your countdown seconds here
 let lives = 4; // Only set here!
+let points = 0; // Add this at the top with your other global variables
 
 function renderHearts() {
     const heartBar = document.getElementById('heartBar');
@@ -78,6 +79,13 @@ function renderHearts() {
     }
 }
 
+function updatePointsDisplay() {
+    const pointsDisplay = document.getElementById('pointsDisplay');
+    if (pointsDisplay) {
+        pointsDisplay.textContent = `SCORE: ${points}`;
+    }
+}
+
 function startCountdown() {
     // Hide the Start button
     const startBtn = document.getElementById('startTimerBtn');
@@ -87,61 +95,279 @@ function startCountdown() {
     const retryBtn = document.getElementById('retryBtn');
     if (retryBtn) retryBtn.style.display = 'none';
 
-    clearInterval(timerInterval);
-    let seconds = timerSeconds;
+    // Hide the upload file button
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) fileInput.style.display = 'none';
+
+    // Disable the language selection
+    const languageSelect = document.getElementById('languageId');
+    if (languageSelect) languageSelect.disabled = true;
+
+    // Show the timer when start is pressed (but don't start countdown yet)
     const timerDisplay = document.getElementById('timerDisplay');
-    timerDisplay.textContent = seconds.toString().padStart(2, '0') + ':00';
+    if (timerDisplay) timerDisplay.style.display = 'block';
 
-    // Show hearts bar when timer starts
-    renderHearts();
-    document.getElementById('heartBar').style.display = 'block';
+    updatePointsDisplay(); // Add this line to show points when the timer shows
 
-    timerInterval = setInterval(() => {
-        seconds--;
+    // Change the card title to "Get ready..."
+    const cardTitle = document.querySelector('.card-title');
+    if (cardTitle) cardTitle.textContent = 'Get ready...';
+
+    // Attach to the Run Code button
+    document.getElementById('myButton').removeEventListener('click', submitCodeToJudge0);
+    document.getElementById('myButton').addEventListener('click', submitAndCheckChallenge);
+
+
+    // Wait a second, then start the challenge and timer
+    setTimeout(() => {
+        // Load the challenge and update title
+        loadRandomChallenge();
+        
+
+        clearInterval(timerInterval);
+        let seconds = timerSeconds;
         timerDisplay.textContent = seconds.toString().padStart(2, '0') + ':00';
-        if (seconds <= 0) {
-            clearInterval(timerInterval);
-            timerDisplay.textContent = "Time's up!";
-            if (lives > 0) {
-                lives--;
-                renderHearts();
+
+        // Show hearts bar when timer starts
+        renderHearts();
+        document.getElementById('heartBar').style.display = 'block';
+
+        timerInterval = setInterval(() => {
+            seconds--;
+            timerDisplay.textContent = seconds.toString().padStart(2, '0') + ':00';
+            if (seconds <= 0) {
+                clearInterval(timerInterval);
+                timerDisplay.textContent = "Time's up!";
+
+                // Show sad face on the title
+                const cardTitle = document.querySelector('.card-title');
+                if (cardTitle && !cardTitle.textContent.includes(':(')) {
+                    cardTitle.textContent = ':(';
+                }
+
                 if (lives > 0) {
-                    // Restart the timer after a short delay
-                    setTimeout(startCountdown, 1000);
+                    lives--;
+                    renderHearts();
+                    if (lives > 0) {
+                        // Restart the timer after a short delay
+                        setTimeout(startCountdown, 1000);
+                    } else {
+                        // Show Retry button when lives run out
+                        showRetryButton();
+                    }
                 } else {
-                    // Show Retry button when lives run out
+                    // Show Retry button if lives already 0
                     showRetryButton();
                 }
-            } else {
-                // Show Retry button if lives already 0
-                showRetryButton();
             }
-        }
-    }, 1000);
+        }, 1000);
+    }, 2000); // 1 second delay before starting the timer
 }
 
 function showRetryButton() {
+    // Create or get the flex container for the buttons
+    let btnGroup = document.getElementById('retryBackGroup');
+    if (!btnGroup) {
+        btnGroup = document.createElement('div');
+        btnGroup.id = 'retryBackGroup';
+        btnGroup.className = 'd-flex align-items-center mb-3';
+        // Insert after the timerDisplay
+        const timerDisplay = document.getElementById('timerDisplay');
+        timerDisplay.parentNode.insertBefore(btnGroup, timerDisplay.nextSibling);
+    }
+    btnGroup.style.display = 'flex';
+
+    // Hide timer and score when showing retry button
+    const timerDisplay = document.getElementById('timerDisplay');
+    if (timerDisplay) timerDisplay.style.display = 'none';
+    const pointsDisplay = document.getElementById('pointsDisplay');
+    if (pointsDisplay) pointsDisplay.style.display = 'none';
+
+    // Retry button
     let retryBtn = document.getElementById('retryBtn');
     if (!retryBtn) {
         retryBtn = document.createElement('button');
         retryBtn.id = 'retryBtn';
-        retryBtn.className = 'btn btn-warning mb-3';
+        retryBtn.className = 'btn btn-warning';
         retryBtn.style.fontSize = '2rem';
-        retryBtn.textContent = 'Retry';
+        retryBtn.textContent = 'Retry!';
         retryBtn.onclick = function() {
             lives = 4;
             retryBtn.style.display = 'none';
-            // Hide hearts until Start is pressed again
+            btnGroup.style.display = 'none';
             document.getElementById('heartBar').style.display = 'none';
             const startBtn = document.getElementById('startTimerBtn');
             if (startBtn) startBtn.style.display = '';
             document.getElementById('timerDisplay').textContent = timerSeconds.toString().padStart(2, '0') + ':00';
+            document.getElementById('timerDisplay').style.display = 'none';
+            // Hide back button as well
+            const backBtn = document.getElementById('backBtn');
+            if (backBtn) backBtn.style.display = 'none';
+
+            // Change the card title
+            const cardTitle = document.querySelector('.card-title');
+            if (cardTitle) cardTitle.textContent = 'Okay, one more time, you got this...';
+
         };
-        // Insert after the heartBar
-        const heartBar = document.getElementById('heartBar');
-        heartBar.parentNode.insertBefore(retryBtn, heartBar.nextSibling);
+        btnGroup.appendChild(retryBtn);
     } else {
         retryBtn.style.display = '';
+        if (!btnGroup.contains(retryBtn)) btnGroup.appendChild(retryBtn);
+    }
+
+    // Back button
+    let backBtn = document.getElementById('backBtn');
+    if (!backBtn) {
+        backBtn = document.createElement('button');
+        backBtn.id = 'backBtn';
+        backBtn.className = 'btn btn-secondary ms-2';
+        backBtn.style.fontSize = '2rem';
+        backBtn.textContent = 'Sandbox!';
+        backBtn.onclick = function() {
+            window.location.reload();
+        };
+        btnGroup.appendChild(backBtn);
+    } else {
+        backBtn.style.display = '';
+        if (!btnGroup.contains(backBtn)) btnGroup.appendChild(backBtn);
     }
 }
 
+
+function loadCodeFileToEditor(fileInputId = 'fileInput') {
+    const fileInput = document.getElementById(fileInputId);
+    if (!fileInput || !fileInput.files.length) return;
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        editor.setValue(e.target.result);
+    };
+    reader.readAsText(file);
+}
+
+// Attach this to your file input change event
+document.getElementById('fileInput').addEventListener('change', function() {
+    loadCodeFileToEditor('fileInput');
+});
+
+function loadCodeFromServer(url) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
+        .then(code => {
+            editor.setValue(code);
+        })
+        .catch(error => {
+            alert('Failed to load file: ' + error);
+        });
+    return url
+}
+
+
+const challenges = [
+    {
+        title : "SPEAK!",
+        languageId: "53", // C++
+        path: 'assets/code-challenges/Speak.cpp',
+        idle : 'assets/animations/Speak/SpeakIdle.gif',
+        good : 'assets/animations/Speak/SpeakGood.gif',
+        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        expectedOutput: "Hello there!"
+    }
+];
+
+function loadRandomChallenge() {
+    if (!challenges.length) return;
+    const rightImg = document.getElementById('animations');
+    const randomIndex = Math.floor(Math.random() * challenges.length);
+    const challenge = challenges[randomIndex];
+    loadCodeFromServer(challenge.path);
+    document.getElementById('languageId').value = challenge.languageId;
+    window.currentChallenge = challenge;
+    rightImg.src = window.currentChallenge.idle
+
+    // Change the card title to the challenge title
+    const cardTitle = document.querySelector('.card-title');
+    if (cardTitle) cardTitle.textContent = challenge.title;
+}
+
+function setStartImage() {
+    const rightImg = document.getElementById('animations');
+    if (rightImg) rightImg.src = 'assets/animations/StartCat.gif'; // Change to your desired image
+}
+
+// Usage: call this ONLY when the start button is pressed, not inside the timer logic
+document.getElementById('startTimerBtn').addEventListener('click', function() {
+    setStartImage();
+    startCountdown();
+});
+
+
+async function submitAndCheckChallenge() {
+
+    const rightImg = document.getElementById('animations');
+    // Only check if a challenge is loaded and the game is started
+    if (!window.currentChallenge) {
+        await submitCodeToJudge0(); // fallback to normal submit if not in challenge mode
+        return;
+    }
+
+    // Show "Processing" while waiting for the response
+    document.getElementById('output').textContent = 'Processing...';
+
+    // Submit code and wait for Judge0 response
+    const code = editor.getValue();
+    const languageId = document.getElementById('languageId').value;
+    const submitUrl = `${baseUrl}/submissions?base64_encoded=false&wait=true`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            language_id: languageId,
+            source_code: code
+        })
+    };
+
+    try {
+        const response = await fetch(submitUrl, options);
+        const data = await response.json();
+        let output = '';
+        if (data.stdout) {
+            output = data.stdout;
+        } else if (data.stderr) {
+            output = data.stderr;
+        } else if (data.compile_output) {
+            output = data.compile_output;
+        } else {
+            output = 'No output';
+        }
+        document.getElementById('output').textContent = output;
+
+        // Compare output to expected
+        const expected = (window.currentChallenge.expectedOutput || '').trim();
+        if (output.trim() === expected) {
+            console.log('Correct! You fixed the code!');
+            points++; // Increment points
+            updatePointsDisplay(); // Update the display
+            rightImg.src = window.currentChallenge.good
+            setTimeout(() => {
+              rightImg.src = window.currentChallenge.idle
+            }, 1100);
+            // Optionally: loadRandomChallenge(); or advance game state
+        } else {
+            console.log('Output does not match expected. Try again!');
+            rightImg.src = window.currentChallenge.bad
+            setTimeout(() => {
+              rightImg.src = window.currentChallenge.idle
+            }, 1100);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('output').textContent = 'Error: ' + error;
+    }
+}
