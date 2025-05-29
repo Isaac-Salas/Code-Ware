@@ -113,16 +113,19 @@ function startCountdown() {
     const cardTitle = document.querySelector('.card-title');
     if (cardTitle) cardTitle.textContent = 'Get ready...';
 
+    // Clean the code editor
+    if (typeof editor !== 'undefined' && editor.setValue) {
+        editor.setValue('');
+    }
+
     // Attach to the Run Code button
     document.getElementById('myButton').removeEventListener('click', submitCodeToJudge0);
     document.getElementById('myButton').addEventListener('click', submitAndCheckChallenge);
-
 
     // Wait a second, then start the challenge and timer
     setTimeout(() => {
         // Load the challenge and update title
         loadRandomChallenge();
-        
 
         clearInterval(timerInterval);
         let seconds = timerSeconds;
@@ -142,7 +145,8 @@ function startCountdown() {
                 // Show sad face on the title
                 const cardTitle = document.querySelector('.card-title');
                 if (cardTitle && !cardTitle.textContent.includes(':(')) {
-                    cardTitle.textContent = ':(';
+                    let random = Math.floor(Math.random() * 10);
+                    cardTitle.textContent = losephrases[random] + ' :(';
                 }
 
                 if (lives > 0) {
@@ -161,7 +165,7 @@ function startCountdown() {
                 }
             }
         }, 1000);
-    }, 2000); // 1 second delay before starting the timer
+    }, 2000); // 2 second delay before starting the timer
 }
 
 function showRetryButton() {
@@ -276,8 +280,45 @@ const challenges = [
         good : 'assets/animations/Speak/SpeakGood.gif',
         bad : 'assets/animations/Speak/SpeakBad.gif', 
         expectedOutput: "Hello there!"
+    },
+    {
+        title : "1!",
+        languageId: "53", // C++
+        path: 'assets/code-challenges/Speak.cpp',
+        idle : 'assets/animations/Speak/SpeakIdle.gif',
+        good : 'assets/animations/Speak/SpeakGood.gif',
+        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        expectedOutput: "Hello there!"
+    },
+    {
+        title : "2!",
+        languageId: "53", // C++
+        path: 'assets/code-challenges/Speak.cpp',
+        idle : 'assets/animations/Speak/SpeakIdle.gif',
+        good : 'assets/animations/Speak/SpeakGood.gif',
+        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        expectedOutput: "Hello there!"
+    },
+    {
+        title : "3!",
+        languageId: "53", // C++
+        path: 'assets/code-challenges/Speak.cpp',
+        idle : 'assets/animations/Speak/SpeakIdle.gif',
+        good : 'assets/animations/Speak/SpeakGood.gif',
+        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        expectedOutput: "Hello there!"
+    },
+    {
+        title : "4!",
+        languageId: "53", // C++
+        path: 'assets/code-challenges/Speak.cpp',
+        idle : 'assets/animations/Speak/SpeakIdle.gif',
+        good : 'assets/animations/Speak/SpeakGood.gif',
+        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        expectedOutput: "Hello there!"
     }
 ];
+
 
 function loadRandomChallenge() {
     if (!challenges.length) return;
@@ -306,6 +347,8 @@ document.getElementById('startTimerBtn').addEventListener('click', function() {
 });
 
 
+
+// The whole ass beating heart of this game
 async function submitAndCheckChallenge() {
 
     const rightImg = document.getElementById('animations');
@@ -355,19 +398,71 @@ async function submitAndCheckChallenge() {
             points++; // Increment points
             updatePointsDisplay(); // Update the display
             rightImg.src = window.currentChallenge.good
+            const cardTitle = document.querySelector('.card-title');
+            let random = Math.floor(Math.random() * 10);
+            cardTitle.textContent = goodphrases[random]
+            clearInterval(timerInterval);
+            const timerDisplay = document.getElementById('timerDisplay');
+            timerDisplay.textContent = 'A little break 4 U :)'
             setTimeout(() => {
               rightImg.src = window.currentChallenge.idle
-            }, 1100);
-            // Optionally: loadRandomChallenge(); or advance game state
+              startCountdown();
+            }, 1200);
+
+            // Pause the countdown timer
+            
         } else {
             console.log('Output does not match expected. Try again!');
             rightImg.src = window.currentChallenge.bad
+            const cardTitle = document.querySelector('.card-title');
+            const previnst = cardTitle.textContent
+            let random = Math.floor(Math.random() * 10);
+            cardTitle.textContent = badphrases[random]
             setTimeout(() => {
+              cardTitle.textContent = previnst
               rightImg.src = window.currentChallenge.idle
-            }, 1100);
+            }, 1200);
         }
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('output').textContent = 'Error: ' + error;
     }
 }
+
+const badphrases = [
+  'Not quite.', 
+  'Close.', 
+  'Maybe its not that one...', 
+  'Didnt think so...', 
+  'Almost?', 
+  'Not really', 
+  'Nah', 
+  ':|',
+  '¯|_(ツ)_|¯',
+  'Try something else?'
+  
+]
+const goodphrases = [
+  'NICE!',
+  'You got it!!!',
+  'All good!',
+  'You nailed that one!',
+  'Doing GREAT!', 
+  'YEEEAH!',
+  'EZ!', 
+  'You are too good!!!', 
+  'TRYHARD',
+  'WOW!!!!!'
+]
+const losephrases = [
+  'Thats rough ',
+  'DARN IT',
+  'Better luck next time',
+  'Oh man...',
+  'Well...',
+  'Git gud?',
+  'This is hard',
+  'Try harder?',
+  'What happend?',
+  '...'
+]
