@@ -1,5 +1,5 @@
 // Changed to my AWS Judge0 instance
-const baseUrl = 'http://3.21.190.20:2358';
+const baseUrl = 'https://isaac-cwapi.work.gd/';
 
 // For "about" endpoint
 const url = `${baseUrl}/about`;
