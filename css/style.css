@@ -88,3 +88,13 @@ body {
     border-color: #ff79ae !important;
     color: #181a1b !important;
 }
+
+#downloadCodeBtn {
+    background-color: #639bff !important;
+    color: #fff !important;
+    border: none !important;
+}
+#downloadCodeBtn:hover, #downloadCodeBtn:focus {
+    background-color: #4076c4 !important;
+    color: #fff !important;
+}

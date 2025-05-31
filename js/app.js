@@ -247,6 +247,14 @@ function loadCodeFileToEditor(fileInputId = 'fileInput') {
     const reader = new FileReader();
     reader.onload = function(e) {
         editor.setValue(e.target.result);
+
+        // Detect language by file extension and set the language selector
+        const ext = file.name.split('.').pop().toLowerCase();
+        let langId = "0";
+        if (ext === "c") langId = "50";
+        else if (ext === "cpp") langId = "53";
+        else if (ext === "py") langId = "71";
+        document.getElementById('languageId').value = langId;
     };
     reader.readAsText(file);
 }
@@ -286,9 +294,9 @@ const challenges = [
         title : "MOVE!!!",
         languageId: "71", // C++
         path: 'assets/code-challenges/Speak.cpp',
-        idle : 'assets/animations/Speak/SpeakIdle.gif',
-        good : 'assets/animations/Speak/SpeakGood.gif',
-        bad : 'assets/animations/Speak/SpeakBad.gif', 
+        idle : 'assets/animations/Speak/MoveIdle.gif',
+        good : 'assets/animations/Speak/MoveGood.gif',
+        bad : 'assets/animations/Speak/MoveBad.gif', 
         expectedOutput: "Hello there!"
     },
     {
@@ -429,6 +437,34 @@ async function submitAndCheckChallenge() {
         document.getElementById('output').textContent = 'Error: ' + error;
     }
 }
+
+document.getElementById('downloadCodeBtn').addEventListener('click', function() {
+    const code = editor.getValue();
+    const languageId = document.getElementById('languageId').value;
+
+    // Detect extension based on selected language
+    let extension = "txt";
+    if (languageId === "50") extension = "c";
+    else if (languageId === "53") extension = "cpp";
+    else if (languageId === "71") extension = "py";
+
+    const filename = `my_code.${extension}`;
+    const blob = new Blob([code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }, 0);
+});
+
+
 
 const badphrases = [
   'Not quite.', 

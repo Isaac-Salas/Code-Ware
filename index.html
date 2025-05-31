@@ -36,15 +36,22 @@
                             </script>
                         </div>
                         <div class="mb-3">
-                            <label for="languageId" class="form-label">Select Language:</label>
-                            <select id="languageId" class="form-select">
-                                <option value="0">Select a language</option>
-                                <option value="50">C</option>
-                                <option value="53">C++</option>
-                                <option value="71">Python</option>
-                            </select>
+                            <div class="d-flex align-items-center mb-2">
+                                <label for="languageId" class="form-label me-2 mb-0">Language:</label>
+                                <select id="languageId" class="form-select flex-grow-1" style="min-width:0;">
+                                    <option value="0">Select a language</option>
+                                    <option value="50">C</option>
+                                    <option value="53">C++</option>
+                                    <option value="71">Python</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <input type="file" id="fileInput" accept=".py,.cpp,.c,.txt" class="form-control" style="width:auto;display:inline-block;">
+                                <button id="downloadCodeBtn" class="btn btn-info" style="display:inline-block;">
+                                    Save As...
+                                </button>
+                            </div>
                         </div>
-                        <input type="file" id="fileInput" accept=".py,.cpp,.c,.txt" class="form-control mb-3">
                         <div class="d-grid mb-3">
                             <button id="myButton" class="btn btn-primary btn-lg">Run Code!!!!!</button>
                         </div>
